@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <style>
+body {
+    font-family: Arial;
+    text-align: center;
+    transition: background 1s ease-in-out;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+.happy {
+    background: linear-gradient(45deg, #f7dc6f,#f8c471 );
+}
+
+.sad {
+    background: linear-gradient(45deg, #5d6d7e, #566573);
+}
+
+.excited {
+    background: linear-gradient(45deg, #ff4081, #ffeb3b);
+}
+
+.angry {
+    background: linear-gradient(45deg, #f44336, #9c27b0);
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+.btn {
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: 0.3s;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px black;
+}
+
+.happy { background: #ffeb3b; color: #000; }
+.sad { background: #607d8b; }
+.excited { background: #ff4081; }
+.angry { background: #f44336; }
+.previous { background: #6a1b9a; }
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.7);
+}
+
+.emoji {
+    position: absolute;
+    font-size: 40px;
+    animation: floatEmoji 3s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes floatEmoji {
+    0% { transform: translateY(0px); opacity: 1; }
+    100% { transform: translateY(-200px); opacity: 0; }
+}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌈 How Are You Feeling Today? 🌈</h1>
+
+        <div class="buttons">
+            <button class="btn happy" onclick="setMood('happy')">😊 Happy</button>
+            <button class="btn sad" onclick="setMood('sad')">😢 Sad</button>
+            <button class="btn excited" onclick="setMood('excited')">🎉 Excited</button>
+            <button class="btn angry" onclick="setMood('angry')">😡 Angry</button>
+            <button class="btn previous" onclick="showPreviousMood()">🔄 Previous Mood</button>
+        </div>
+
+        <div id="emojiContainer"></div>
+    </div>
+
+    <script>
+        function setMood(mood) {
+    document.body.className = ""; 
+    document.body.classList.add(mood); 
+
+    localStorage.setItem("lastMood", mood); 
+
+    createFloatingEmojis(mood); 
+     }
+
+   function showPreviousMood() {
+    let lastMood = localStorage.getItem("lastMood");
+    if (lastMood) {
+        setMood(lastMood);
+    } else {
+        alert("No previous mood recorded!");
+    }
+}
+
+  function createFloatingEmojis(mood) {
+    let emojiMap = {
+        happy: "😊",
+        sad: "😢",
+        excited: "🎉",
+        angry: "😡"
+    };
+
+    let emojiContainer = document.getElementById("emojiContainer");
+    emojiContainer.innerHTML = ""; 
+
+    for (let i = 0; i < 10; i++) {
+        let emoji = document.createElement("div");
+        emoji.className = "emoji";
+        emoji.innerText = emojiMap[mood];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.body.appendChild(emoji);
+
+        setTimeout(() => {
+            emoji.remove();
+        }, 3000);
+    }
+ }
+</script>
+
+</body>
+</html>
